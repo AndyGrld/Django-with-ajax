@@ -1,0 +1,105 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Save data
+    $('#btnsave').click(function(){
+        console.log("Button save clicked");
+        output = "";
+
+        let sid = $('#stuid').val();
+        let n = $('#nameid').val();
+        let e = $('#emailid').val();
+        let c = $('#courseid').val();
+
+        if (n == ""){
+            console.log("Please enter name")
+        }
+        else if (e == ""){
+            console.log("Please enter email")
+        }
+        else if (c == ""){
+            console.log("Please enter your course")
+        }
+        else{
+            mydata = {stuid:sid, name:n, email:e, course:c};
+
+            $.ajax({
+                url: "{% url 'core:save' %}",
+                method: "POST",
+                data: mydata,
+                success: function(data){
+                    //console.log(data.status);
+                    x = data.student_data;
+                    
+                    if (data.status == "Data saved"){
+                        console.log("Data Submittted successfully")
+
+                        for(i = 0; i < x.length; i++){
+                            output += "<tr><td>"+x[i].id+
+                                "</td><td>"+x[i].name+
+                                "</td><td>"+x[i].email+
+                                "</td><td>"+x[i].course+
+                                "</td><td><input type='button' value='Edit' id='editbtn' data-sid="+x[i].id+">"+
+                                "<input type='button' value='Delete' id='delbtn' data-sid="+x[i].id+"><td>"
+                        }
+                        $("tbody").html(output);
+                        $("form")[0].reset();
+                    }
+                    if (data.status == "Unable to save"){
+                        console.log("Unable to submit data")
+                    }
+                },
+            });
+        }
+    })
+
+// Delete
+$("tbody").on("click", "#delbtn", function(){
+    console.log("Delete button clicked");
+    let id = $(this).attr("data-sid");
+    
+    mydata = {sid:id, csrfmiddlewaretoken: $('[name=csrfmiddlewaretoken]').val()};
+    mythis = $(this);
+
+    $.ajax({
+        url: "{% url 'core:delete' %}",
+        method: "POST",
+        data: mydata,
+
+        success: function(data){
+            console.log(data);
+
+            if (data.status == 1){
+                console.log("Data Deleted");
+                $(mythis).closest("tr").fadeOut();
+            }
+            if (data.status == 0){
+                console.log("Unable to delete data");
+                $(mythis).closest("tr").fadeOut();
+            }
+        }
+    })
+})
+
+// Edit
+$("tbody").on("click", "#editbtn", function(){
+    console.log("Edit button clicked");
+    let id = $(this).attr("data-sid");
+    
+    mydata = {sid:id, csrfmiddlewaretoken: $('[name=csrfmiddlewaretoken]').val()};
+    mythis = $(this);
+
+    $.ajax({
+        url: "{% url 'core:edit' %}",
+        method: "POST",
+        data: mydata,
+
+        success: function(data){
+            console.log(data);
+            $('#stuid').val(data.id);
+            $('#nameid').val(data.name);
+            $('#emailid').val(data.email);
+            $('#courseid').val(data.course);
+        }
+    })
+})
+</script>

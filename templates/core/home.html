@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Some App</title>
+    <link rel="stylesheet" href="{% static 'core.css' %}">
+</head>
+<body>
+<div class="container">
+    <h1>Django Ajax JQuery CRUD App</h1>
+    <div class="row">
+        <div class="col">
+            <h4>Add/Update Students</h4>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="stuid" id="stuid">
+            {{ form.as_p }}
+            <input type="button" value="Save" id="btnsave">
+        </form>
+        </div>
+        <div class="col">
+            <h4>List of Students</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for st in stu %}
+                    <tr>
+                        <td>{{st.id}}</td>
+                        <td>{{st.name}}</td>
+                        <td>{{st.email}}</td>
+                        <td>{{st.course}}</td>
+                        <td>
+                            <input type="button" value="Edit" id="editbtn" data-sid="{{st.id}}">
+                            <input type="button" value="Delete" id="delbtn" data-sid="{{st.id}}">
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% include 'core/ajax.html' %}
+</body>
+</html>

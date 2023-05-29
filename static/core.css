@@ -1,0 +1,59 @@
+.container h1{
+    background-color: pink;
+    color: red;
+}
+.row{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+.col{
+    margin: 10px;
+}
+.container .col h4{
+    background: skyblue;
+    padding: 10px;
+    border-radius: 5px;
+    color: blue;
+    margin: 5px;
+}
+.col form{
+    display: grid;
+    font-size: 18px;
+    grid-template-columns: 1fr;
+}
+.col form input{
+    margin: 5px;
+    height: 20px;
+}
+.col form input[type='button']{
+    background-color:green;
+    border: none;
+    width: 60px;
+    height: 30px;
+    padding: 5px;
+    border-radius: 5px;
+}
+.col form input[type='button']:hover{
+    cursor: pointer;
+}
+table td{
+    padding: 5px;
+}
+#editbtn{
+    background-color: yellow;
+    color: black;
+    margin: 5px;
+    padding:10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#delbtn{
+    background-color: brown;
+    color: red;
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
